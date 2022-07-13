@@ -11,8 +11,9 @@ import XCTest
 
 @available(iOS 13.0, *)
 class URLNetworkSessionTest: XCTestCase {
-    func test_getRequest_status200() throws {
+    func testJSON_getRequest_status200() throws {
         Task {
+            
             let (status, data) = try await URLNetworkSession(urlString: "https://jsonplaceholder.typicode.com/todos/1")
                 .get(MockReceivingJSON_User.self)
             
@@ -21,7 +22,7 @@ class URLNetworkSessionTest: XCTestCase {
         }
     }
     
-    func test_getRequest_status404() throws {
+    func testJSON_getRequest_status404() throws {
         Task {
             let (status, _) = try await URLNetworkSession(urlString: "https://www.kth.se/wtf")
                 .get(MockReceivingJSON_User.self)
@@ -31,7 +32,7 @@ class URLNetworkSessionTest: XCTestCase {
     }
     
     struct MockSendingJSON: Codable {
-        
+        var password: String
     }
         
     struct MockReceivingJSON_User: Decodable {
@@ -39,15 +40,5 @@ class URLNetworkSessionTest: XCTestCase {
         var id: Int
         var title: String
         var completed: Bool
-    }
-    
-    func testMeasured() throws {
-        self.measure {
-            do {
-                try test_getRequest_status200()
-            } catch {
-                print("Test failed")
-            }
-        }
     }
 }

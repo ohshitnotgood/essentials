@@ -143,7 +143,6 @@ public enum HTTPMethod: String {
     case propfind   = "PROPFIND"
 }
 
-// MARK: - NetworkRequestService
 /**
  Greatly simplifies sending and receiving JSON data to a backend network.
  
@@ -173,9 +172,12 @@ public enum HTTPMethod: String {
  ```
  
  Currently this only supports sending and receiving data from the backend. Future releases will add support for web sockets.
+ 
+*Last updated in  13 July 2022 at 17:01.*
  */
 @available(iOS 13.0, *)
 struct URLNetworkSession {
+    // MARK: - NetworkRequestService
     var httpMethod = HTTPMethod.put
     var url: URL
     private var request: URLRequest
@@ -211,7 +213,6 @@ struct URLNetworkSession {
     }
     
     
-    // TODO: Accept nil as a argument to indicate that the function is not expecting anything.
     /// Swift concurrency is only available from iOS 13 which is why this function is only available iOS 13+.
     ///
     /// Set `type` to `nil` of you aren't expecting a response.
@@ -239,7 +240,7 @@ struct URLNetworkSession {
     
     /// Sends a GET request to the URL.
     ///
-    /// iOS no longer supports setting request body with GET requests.
+    /// iOS no longer supports sending JSON with GET requests.
     ///
     /// *Last updated on 22 July 2022 at 23:32.*
     func get<T: Decodable>(_ type: T.Type) async throws -> (status: Int, result: T?) {
@@ -283,6 +284,9 @@ public extension URLSession {
         }
     }
 }
+
+
+// MARK: URLNetworkSocket
 
 
 
@@ -367,6 +371,7 @@ public extension View {
     func available(in: UIUserInterfaceIdiom) -> some View {
         self.modifier(AvailabilityViewModifier(in: `in`))
     }
+    // MARK: func available(in: idiom)
     
     /// Displays views only in certain device types.
     ///
@@ -388,6 +393,7 @@ public extension View {
     func available(in: [UIUserInterfaceIdiom]) -> some View {
         self.modifier(AvailabilityViewModifier(in: `in`))
     }
+    // MARK: func available(in: [idiom])
     
     @available(*, unavailable)
     func availableIn(device: [String]) {
@@ -415,4 +421,19 @@ struct AvailabilityViewModifier: ViewModifier {
             }
         }
     }
+}
+
+enum AvailabilityDevice {
+    case iPhone(_ model: Availability_iPhoneModel)
+    case iPad(_ model: Availability_iPadModel)
+}
+
+enum Availability_iPhoneModel: String {
+    case iPhone8 = "iPhone 8"
+    case iPhoneX = "iPhone X"
+}
+
+enum Availability_iPadModel: String {
+    case iPadPro_11_2020 = "iPad Pro 11 inch 2020"
+    case iPadPro_12_9_2020 = "iPad Pro 12.9 inch 2020"
 }
