@@ -296,21 +296,21 @@ public extension URLSession {
 ///
 /// According to Apple's documentations, a `UIVisualEffectView` is "an object that implements some complex visual effects".
 @available(iOS 13.0, *)
-struct VisualEffectView: UIViewRepresentable {
+public struct VisualEffectView: UIViewRepresentable {
     var effect: UIVisualEffect
     
-    init(style blurStyle: UIBlurEffect.Style) {
+    public init(style blurStyle: UIBlurEffect.Style) {
         self.effect = UIBlurEffect(style: blurStyle)
     }
     
-    init(effect: UIVisualEffect) {
+    public init(effect: UIVisualEffect) {
         self.effect = effect
     }
     
-    func makeUIView(context: Context) -> UIVisualEffectView {
+    public func makeUIView(context: Context) -> UIVisualEffectView {
         return UIVisualEffectView(effect: effect)
     }
-    func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+    public func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
         uiView.effect = effect
     }
 }
