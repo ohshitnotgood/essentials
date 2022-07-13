@@ -437,3 +437,11 @@ enum Availability_iPadModel: String {
     case iPadPro_11_2020 = "iPad Pro 11 inch 2020"
     case iPadPro_12_9_2020 = "iPad Pro 12.9 inch 2020"
 }
+
+
+// MARK: - UIScreen
+public extension UIScreen {
+    static let screenWidth = UIScreen.main.bounds.size.width
+    static let screenHeight = UIScreen.main.bounds.size.height
+    static let screenSize = UIScreen.main.bounds.size
+}
