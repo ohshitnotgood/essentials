@@ -46,6 +46,21 @@ public extension Array where Element: Equatable {
         }
         return self
     }
+    
+    /// Removes the first occurance of the provided string.
+    ///
+    /// **Important**
+    ///
+    /// List is **not** sorted before removal is done.
+    ///
+    /// *Last edited on 13 July 2022 at 22:23.*
+    @discardableResult
+    mutating func removeFirstInstance(of element: Element) -> Array<Element> {
+        if let index = self.firstIndex(of: element) {
+            self.remove(at: index)
+        }
+        return self
+    }
 }
 
 // MARK: - Array of Strings
@@ -55,11 +70,34 @@ public extension Array where Element == String {
     /// Does **not** remove empty strings in the list.
     ///
     /// *Last edited on 12 July 2022 at 20:17*
-    @discardableResult mutating func trimAll(in: CharacterSet) -> [String] {
+    @discardableResult
+    mutating func trimAll(in: CharacterSet) -> [String] {
         self = self.map { each_string in
             each_string.trimmingCharacters(in: `in`)
         }
         return self
+    }
+    
+    /// Removes repeating strings in a list.
+    @discardableResult
+    mutating func removeDuplicates() -> [String] {
+        var result = [Element]()
+        for value in self {
+            if !result.contains(where: { $0.caseInsensitiveCompare(value.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame }) {
+                result.append(value)
+            }
+        }
+        self = result
+        return self
+    }
+    
+    /// Removes all strings in the list that match provided element.
+    mutating func removeAllInstancesOf(_ element: Element) {
+        while self.contains(element) {
+            if let index = self.firstIndex(of: element) {
+                self.remove(at: index)
+            }
+        }
     }
 }
 
@@ -441,7 +479,10 @@ enum Availability_iPadModel: String {
 
 // MARK: - UIScreen
 public extension UIScreen {
+    /// Width of device's screen
     static let screenWidth = UIScreen.main.bounds.size.width
+    /// Height of device's screen
     static let screenHeight = UIScreen.main.bounds.size.height
+    /// SIze of device's screen.
     static let screenSize = UIScreen.main.bounds.size
 }
