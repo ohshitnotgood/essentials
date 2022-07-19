@@ -486,3 +486,28 @@ public extension UIScreen {
     /// SIze of device's screen.
     static let screenSize = UIScreen.main.bounds.size
 }
+
+// MARK: SystemImageButton
+/// A button with only an SF symbol for its label.
+///
+/// Only a system image is visible with **no label**.
+///
+/// This view behaves like a standard SwiftUI button (i.e. click on macOS, tap on iOS, etc.)
+@available(iOS 13.0, *)
+public struct SystemImageButton: View {
+    var imageName: String
+    var action: () -> ()
+    
+    public init(_ systemName: String, action: @escaping () -> ()) {
+        self.imageName = systemName
+        self.action = action
+    }
+    
+    public var body: some View {
+        Button {
+            action()
+        } label: {
+            Image(systemName: imageName)
+        }
+    }
+}
