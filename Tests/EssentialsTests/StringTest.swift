@@ -15,6 +15,10 @@ class StringTest: XCTestCase {
         
         let stringSetToValue = "some_value"
         XCTAssertEqual(stringSetToValue.isNotEmpty, true)
+        
+        let stringStraight = "hello"
+        let stringReversed = "olleh"
+        XCTAssertEqual(-stringStraight, stringReversed)
     }
 }
 

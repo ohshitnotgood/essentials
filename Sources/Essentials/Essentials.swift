@@ -133,7 +133,18 @@ public extension String {
         let end = index(start, offsetBy: range.upperBound - range.lowerBound)
         return String(self[start ..< end])
     }
+    
+    
+    /// Reverses a string.
+    ///
+    /// Inspired from https://sarunw.com
+    ///
+    /// *Last updated on 19 July 2022 at 16:41.*
+    static prefix func -(str: String) -> String {
+        return String(str.reversed())
+    }
 }
+
 
 // MARK: - Optional String
 public extension Optional where Wrapped == String {
@@ -509,5 +520,11 @@ public struct SystemImageButton: View {
         } label: {
             Image(systemName: imageName)
         }
+    }
+}
+
+extension CGSize {
+    static func +=(_ left: CGSize, _ right: CGSize) -> CGSize {
+        return CGSize(width: left.width + right.width, height: left.height + right.height)
     }
 }
