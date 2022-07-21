@@ -34,6 +34,8 @@ public extension Array where Element: Equatable {
         return !self.isEmpty
     }
     
+    /// If the element is already there in a list, it is removed. Otherwise, the element is appended.
+    ///
     /// *Last modified on 12 July 2022 at 20:12.**
     @discardableResult
     mutating func removeIfNotContains(_ e: Element) -> Array<Element> {
@@ -61,6 +63,22 @@ public extension Array where Element: Equatable {
         }
         return self
     }
+    
+    
+    /// Removes all repeating elements in a list.
+    ///
+    /// *Last edited on 21 July 2022 at 12:11.*
+    @discardableResult
+    mutating func removeDuplicates() -> [Element] {
+        var result = [Element]()
+        for value in self {
+            if !result.contains(value) {
+                result.append(value)
+            }
+        }
+        self = result
+        return self
+    }
 }
 
 // MARK: - Array of Strings
@@ -69,7 +87,7 @@ public extension Array where Element == String {
     ///
     /// Does **not** remove empty strings in the list.
     ///
-    /// *Last edited on 12 July 2022 at 20:17*
+    /// *Last edited on 12 July 2022 at 20:17.*
     @discardableResult
     mutating func trimAll(in: CharacterSet) -> [String] {
         self = self.map { each_string in
@@ -79,8 +97,11 @@ public extension Array where Element == String {
     }
     
     /// Removes repeating strings in a list.
+    ///
+    ///
+    /// *Last edited on 21 July 2022 at 12:09.*
     @discardableResult
-    mutating func removeDuplicates() -> [String] {
+    mutating func caseInsensitiveRemoveDuplicates() -> [String] {
         var result = [Element]()
         for value in self {
             if !result.contains(where: { $0.caseInsensitiveCompare(value.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame }) {
@@ -89,6 +110,23 @@ public extension Array where Element == String {
         }
         self = result
         return self
+    }
+    
+    // TODO: Implement
+    
+    /// This function requires testing before it can be made available.
+    ///
+    /// *Last updated on 21 July 2022 at 13:42.*
+    @discardableResult
+    @available(*, unavailable)
+    mutating func caseInsensitiveRemoveDuplicates(keep: TextCaseSet) -> [String] {
+        return []
+    }
+    
+    enum TextCaseSet {
+        case uppercased
+        case capitalized
+        case lowercased
     }
     
     /// Removes all strings in the list that match provided element.
@@ -253,7 +291,7 @@ struct URLNetworkSession {
     }
     
     /// *Last updated on 22 July at 23:10.*
-    mutating func send<T: Encodable>(_ data: T) async throws -> URLNetworkSession {
+    mutating func body<T: Encodable>(_ data: T) async throws -> URLNetworkSession {
         self.request = URLRequest(url: self.url)
         self.request.httpMethod = self.httpMethod.rawValue
         self.request.setValue("application/JSON", forHTTPHeaderField: "Content-Type")
@@ -524,6 +562,7 @@ public struct SystemImageButton: View {
 }
 
 extension CGSize {
+    @available(*, unavailable)
     static func +=(_ left: CGSize, _ right: CGSize) -> CGSize {
         return CGSize(width: left.width + right.width, height: left.height + right.height)
     }
