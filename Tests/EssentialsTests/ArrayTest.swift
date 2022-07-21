@@ -16,4 +16,13 @@ class Array_OfStringTest: XCTestCase {
         
         XCTAssertEqual(test_list.trimAll(in: .whitespacesAndNewlines), expected_list)
     }
+    
+    func test_removeDuplicates() throws {
+        var test_list_a = ["Hello World", "Hello World", "hello world", "helloworld"]
+        let expected_list_a = ["Hello World", "hello world", "helloworld"]
+        
+        XCTAssertEqual(test_list_a.removeDuplicates(), expected_list_a)
+        
+        // TODO: Implement randomly generated test data.
+    }
 }

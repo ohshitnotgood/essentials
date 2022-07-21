@@ -9,6 +9,8 @@ import XCTest
 @testable import Essentials
 
 class StringTest: XCTestCase {
+    // This function tests String.isNotEmpty.
+    // Should return false if a string is an empty string (a.k.a "")
     func test_ext_isNotEmpty() throws {
         let stringSetToEmpty = ""
         XCTAssertEqual(stringSetToEmpty.isNotEmpty, false)
@@ -23,6 +25,9 @@ class StringTest: XCTestCase {
 }
 
 class OptionalStringTest: XCTestCase {
+    // This function tests String?.isNotNilOrEmpty
+    // Should return false if a string is set to nil
+    // Should return false if a string is empty (a.k.a "")
     func test_ext_isNotNilOrEmpty() throws {
         let optionalStringSetToNil: String? = nil
         XCTAssertEqual(optionalStringSetToNil.isNotNilOrEmpty, false)
