@@ -202,34 +202,6 @@ public extension Optional where Wrapped == String {
     }
 }
 
-
-// MARK: - HTTPMethod
-/**
- * A list of common https methods.
- *
- * *Last updated on 22 July 2022 at 22:56.*
- */
-
-public enum HTTPMethod: String {
-    @available(*, unavailable, message: "Use URLNetworkSession(urlString: String).get() instead.")
-    case get        = "GET"
-    case put        = "PUT"
-    case delete     = "DELETE"
-    case update     = "UPDATE"
-    case push       = "PUSH"
-    case patch      = "PATCH"
-    case copy       = "COPY"
-    case link       = "LINK"
-    case unlink     = "UNLINK"
-    case head       = "HEAD"
-    case options    = "OPTIONS"
-    case purge      = "PURGE"
-    case lock       = "LOCK"
-    case unlock     = "UNLOCK"
-    case view       = "VIEW"
-    case propfind   = "PROPFIND"
-}
-
 /**
  Greatly simplifies sending and receiving JSON data to a backend network.
  
@@ -263,6 +235,7 @@ public enum HTTPMethod: String {
 *Last updated in  13 July 2022 at 17:01.*
  */
 @available(iOS 13.0, *)
+@available(macOS 10.15, *)
 struct URLNetworkSession {
     // MARK: - NetworkRequestService
     var httpMethod = HTTPMethod.put
@@ -277,9 +250,9 @@ struct URLNetworkSession {
     }
     
     /// *Last updated on 22 July at 23:07.*
-    init(urlString: String, _ httpMethod: HTTPMethod) throws {
+    init(location: String, _ httpMethod: HTTPMethod) {
         self.httpMethod = httpMethod
-        self.url = URL(string: urlString)!
+        self.url = URL(string: location)!
         self.request = URLRequest(url: url)
     }
     
@@ -342,6 +315,7 @@ struct URLNetworkSession {
 
 // MARK: - URLSession
 @available(iOS 13.0, *)
+@available(macOS 10.15, *)
 public extension URLSession {
     @available(iOS, deprecated: 15.0, message: "This extension is no longer necessary. Use API built into SDK")
     func data(from url: URL) async throws -> (Data, URLResponse) {
@@ -372,12 +346,88 @@ public extension URLSession {
     }
 }
 
+// MARK: HStack
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+public extension HStack {
+    /// Distributes each element with equal spaces.
+    // TODO: Do
+    @available(*, unavailable)
+    func equify() {
+        
+    }
+    
+}
 
-// MARK: URLNetworkSocket
+
+// MARK: VStack
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+public extension VStack {
+    
+}
+
+// MARK: ZStack
+@available(iOS 13.0, *)
+@available(macOS 10.15, *)
+public extension ZStack {
+    
+}
 
 
+enum AvailabilityDevice {
+    case iPhone(_ model: Availability_iPhoneModel)
+    case iPad(_ model: Availability_iPadModel)
+}
+
+enum Availability_iPhoneModel: String {
+    case iPhone8 = "iPhone 8"
+    case iPhoneX = "iPhone X"
+}
+
+enum Availability_iPadModel: String {
+    case iPadPro_11_2020 = "iPad Pro 11 inch 2020"
+    case iPadPro_12_9_2020 = "iPad Pro 12.9 inch 2020"
+}
 
 
+// MARK: SystemImageButton
+/// A button with only an SF symbol for its label.
+///
+/// Only a system image is visible with **no label**.
+///
+/// This view behaves like a standard SwiftUI button (i.e. click on macOS, tap on iOS, etc.)
+@available(iOS 13.0, *)
+@available(macOS 11.0, *)
+public struct SystemImageButton: View {
+    var imageName: String
+    var action: () -> ()
+    
+    public init(_ systemName: String, action: @escaping () -> ()) {
+        self.imageName = systemName
+        self.action = action
+    }
+    
+    public var body: some View {
+        Button {
+            action()
+        } label: {
+            Image(systemName: imageName)
+        }
+    }
+}
+
+extension CGSize {
+    @available(*, unavailable)
+    static func +=(_ left: CGSize, _ right: CGSize) -> CGSize {
+        return CGSize(width: left.width + right.width, height: left.height + right.height)
+    }
+}
+
+
+// MARK: - iOS
+#if iOS
+import UIKit
 // MARK: - UIBlurEffect
 /// SwiftUI implementation of `UIVisualEffectView`.
 ///
@@ -402,34 +452,21 @@ public struct VisualEffectView: UIViewRepresentable {
     }
 }
 
-// MARK: HStack
-@available(iOS 13.0, *)
-public extension HStack {
-    /// Distributes each element with equal spaces.
-    // TODO: Do
-    @available(*, unavailable)
-    func equify() {
-        
-    }
-    
+
+
+// MARK: - UIScreen
+public extension UIScreen {
+    /// Width of device's screen
+    static let screenWidth = UIScreen.main.bounds.size.width
+    /// Height of device's screen
+    static let screenHeight = UIScreen.main.bounds.size.height
+    /// SIze of device's screen.
+    static let screenSize = UIScreen.main.bounds.size
 }
-
-
-// MARK: VStack
-@available(iOS 13.0, *)
-public extension VStack {
-    
-}
-
-// MARK: ZStack
-@available(iOS 13.0, *)
-public extension ZStack {
-    
-}
-
 
 // MARK: - View
 @available(iOS 13.0, *)
+@available(macOS 10.15, *)
 public extension View {
     /// Displays views only in certain device types.
     ///
@@ -510,60 +547,41 @@ struct AvailabilityViewModifier: ViewModifier {
     }
 }
 
-enum AvailabilityDevice {
-    case iPhone(_ model: Availability_iPhoneModel)
-    case iPad(_ model: Availability_iPadModel)
-}
-
-enum Availability_iPhoneModel: String {
-    case iPhone8 = "iPhone 8"
-    case iPhoneX = "iPhone X"
-}
-
-enum Availability_iPadModel: String {
-    case iPadPro_11_2020 = "iPad Pro 11 inch 2020"
-    case iPadPro_12_9_2020 = "iPad Pro 12.9 inch 2020"
-}
+#endif
 
 
-// MARK: - UIScreen
-public extension UIScreen {
-    /// Width of device's screen
-    static let screenWidth = UIScreen.main.bounds.size.width
-    /// Height of device's screen
-    static let screenHeight = UIScreen.main.bounds.size.height
-    /// SIze of device's screen.
-    static let screenSize = UIScreen.main.bounds.size
-}
 
-// MARK: SystemImageButton
-/// A button with only an SF symbol for its label.
-///
-/// Only a system image is visible with **no label**.
-///
-/// This view behaves like a standard SwiftUI button (i.e. click on macOS, tap on iOS, etc.)
-@available(iOS 13.0, *)
-public struct SystemImageButton: View {
-    var imageName: String
-    var action: () -> ()
+// MARK: - macOS
+#if macOS
+import AppKit
+
+@available(macOS 11.0, *)
+public struct VisualEffectView: NSViewRepresentable {
+    var effect = NSVisualEffectView()
     
-    public init(_ systemName: String, action: @escaping () -> ()) {
-        self.imageName = systemName
-        self.action = action
+    public func material(_ material: NSVisualEffectView.Material) -> some View {
+        effect.material = material
+        return effect
     }
     
-    public var body: some View {
-        Button {
-            action()
-        } label: {
-            Image(systemName: imageName)
-        }
+    public func blendingMode(_ blendingMode: NSVisualEffectView.BlendingMode) -> some View {
+        effect.blendingMode = blendingMode
+        return effect
     }
+    
+    public func state(_ state: NSVisualEffectView.State) -> some View {
+        effect.state = state
+        return effect
+    }
+    
+    public func makeNSView(context: Context) -> some NSView {
+        return effect
+    }
+    
+    public func updateNSView(_ nsView: NSViewType, context: Context) {
+        
+    }
+    
 }
+#endif
 
-extension CGSize {
-    @available(*, unavailable)
-    static func +=(_ left: CGSize, _ right: CGSize) -> CGSize {
-        return CGSize(width: left.width + right.width, height: left.height + right.height)
-    }
-}

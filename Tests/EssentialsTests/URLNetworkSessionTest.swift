@@ -31,6 +31,10 @@ class URLNetworkSessionTest: XCTestCase {
         }
     }
     
+    func test() throws { Task {
+        let session = try AsyncHTTPSession.with(location: "", .get)
+    }}
+    
     struct MockSendingJSON: Codable {
         var password: String
     }
